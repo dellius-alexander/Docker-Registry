@@ -43,8 +43,8 @@
               REGISTRY_AUTH: "htpasswd"
               REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
               REGISTRY_AUTH_HTPASSWD_PATH: "/auth/htpasswd"
-              REGISTRY_HTTP_TLS_CERTIFICATE: "/certs/_.dellius.app.crt"
-              REGISTRY_HTTP_TLS_KEY: "/certs/_.dellius.app.key"
+              REGISTRY_HTTP_TLS_CERTIFICATE: "/certs/domain.crt"
+              REGISTRY_HTTP_TLS_KEY: "/certs/domain.key"
             volumes: 
               - ${PWD}/auth:/auth
               - ${PWD}/certs:/certs
