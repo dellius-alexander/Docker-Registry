@@ -1,0 +1,32 @@
+version: '3.8'
+services: 
+  registry:
+    image: registry:2.7.1
+    container_name: registry
+    environment: 
+        # Set Registry Environment
+      REGISTRY_AUTH: "htpasswd"
+      REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
+      REGISTRY_AUTH_HTPASSWD_PATH: "/auth/htpasswd"
+      REGISTRY_HTTP_TLS_CERTIFICATE: "/certs/_.dellius.app.crt"
+      REGISTRY_HTTP_TLS_KEY: "/certs/_.dellius.app.key"
+    volumes: 
+      - ${PWD}/auth:/auth
+      - ${PWD}/certs:/certs
+      - ${PWD}/data:/var/lib/registry
+    restart: on-failure
+    expose: 
+      - 5000
+    ports: 
+      - 5000:5000
+    networks: 
+      registry-network:
+        ipv4_address: 172.27.0.3
+networks: 
+  registry-network:
+    driver: bridge
+    ipam: 
+      driver: default
+      config: 
+        - subnet: 172.27.0.0/28
+

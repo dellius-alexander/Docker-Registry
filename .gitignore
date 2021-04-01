@@ -1,0 +1,5 @@
+# Ignore files
+registry.env
+# Ignore directories
+certs/
+auth/
