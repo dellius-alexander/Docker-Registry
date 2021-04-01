@@ -8,27 +8,39 @@
 
 <br/>
 
-1. Create a secret file to be used to validate username & password.
-    - This example uses native basic authentication using `htpasswd` to store the secrets. 
+1. Edit the /etc/docker/daemon.json file by adding a object to allow our private registry.
+
+    ```json
+    {
+        // The value is an array and can hold multiple registries
+        "insecure-registries": [ "myregistry.domain.com/:5000" ]
+    }
+    ```
+
+2. Create a secret file to be used to validate username & password.
+    - This example uses native basic authentication using `htpasswd` to store the secrets.
         - Install package `httpd-tools`, as `htpasswd` is part of this package
     - Create a `auth` directory for your secret.
+
         ```bash
-        $  mkdir auth
+        $ mkdir auth
         ```
+
     - Run the command:
         - htpasswd -Bbn \<username> "\<password>" > auth/htpasswd
+        
         ```bash
         $ htpasswd -Bbn <username> "<password>" > auth/htpasswd
         $ cat auth/htpasswd
         dalexander:<Redacted Password>
         ```
 
-2. Create a `certs` directory and copy the .crt and .key files from the CA into the certs directory. The following steps assume that the files are named domain.crt and domain.key.
+3. Create a `certs` directory and copy the .crt and .key files from the CA into the certs directory. The following steps assume that the files are named domain.crt and domain.key.
     - Get a registered domain/URL like: `https://myregistry.domain.com/`
     - Your DNS, routing, and firewall settings allow access to the registry’s host on port 5000/443. This example uses port 5000.
     - You have already obtained a certificate from a certificate authority (CA)
 
-3. Start the registry with basic authentication via docker-compose file.
+4. Start the registry with basic authentication via docker-compose file.
 
     - registry.docker-compose.yaml
 
@@ -66,14 +78,17 @@
               config: 
                 - subnet: 172.27.0.0/28
         ```
+
     - Run the command to start your registry
+    
         ```bash
           # Start docker registry
         $ docker-compose -f registry.docker-compose.yaml up -d && \
           # for logging purposes
           docker-compose -f registry.docker-compose.yaml logs -f
         ```
-4. Try to pull an image from the registry, or push an image to the registry. These commands should fail.
+
+5. Try to pull an image from the registry, or push an image to the registry. These commands should fail.
     ```bash
     $ docker push myregistry.domain.com:5000/nginx:1.19.5
     The push refers to repository [myregistry.domain.com:5000/nginx]
@@ -85,7 +100,7 @@
     no basic auth credentials
 
     ```
-5. Login into the registry.
+6. Login into the registry.
 
     ```bash
     $ docker login myregistry.domain.com:5000
@@ -98,7 +113,7 @@
     Login Succeeded
     
     ```
-6. Docker clients can now pull from and push to your registry using its external address. The following commands demonstrate this:
+7. Docker clients can now pull from and push to your registry using its external address. The following commands demonstrate this:
 
     ```bash
     $ docker pull ubuntu:16.04
@@ -106,4 +121,5 @@
     $ docker push myregistry.domain.com/my-ubuntu
     $ docker pull myregistry.domain.com/my-ubuntu
     ```
+
 **Thats it your are done...**
