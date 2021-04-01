@@ -4,6 +4,8 @@
 
 ## Native Basic Auth
 
+***Note:*** see [Running a Domain Registry at docker docs.](https://docs.docker.com/registry/deploying/#running-a-domain-registry)
+
 <br/>
 
 1. Create a secret file to be used to validate username & password.
