@@ -98,5 +98,12 @@
     Login Succeeded
     
     ```
+6. Docker clients can now pull from and push to your registry using its external address. The following commands demonstrate this:
 
+    ```bash
+    $ docker pull ubuntu:16.04
+    $ docker tag ubuntu:16.04 myregistry.domain.com/my-ubuntu
+    $ docker push myregistry.domain.com/my-ubuntu
+    $ docker pull myregistry.domain.com/my-ubuntu
+    ```
 **Thats it your are done...**
